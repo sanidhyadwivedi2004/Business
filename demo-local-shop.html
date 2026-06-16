@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sharma General Store – Your Neighbourhood Shop Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0A1628;
+      --navy-mid: #142240;
+      --gold: #F5A623;
+      --gold-light: #FFD07A;
+      --cream: #FFF8EE;
+      --white: #FFFFFF;
+      --text-dark: #1A2B45;
+      --text-muted: #6B7A93;
+      --green: #27AE60;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+    /* ── STICKY HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,22,40,0.96); backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 64px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--gold); letter-spacing: 0.5px; }
+    .logo span { color: var(--white); }
+    nav { display: flex; gap: 28px; }
+    nav a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.3px; transition: color 0.2s; }
+    nav a:hover { color: var(--gold); }
+    .header-cta {
+      background: var(--gold); color: var(--navy); border: none; padding: 9px 22px;
+      border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .header-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; background: var(--navy);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 80px 5vw 60px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,166,35,0.18) 0%, transparent 70%);
+      animation: pulse 5s ease-in-out infinite;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -80px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,166,35,0.10) 0%, transparent 70%);
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.08);opacity:0.7} }
+
+    .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; width: 100%; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.4); color: var(--gold); padding: 6px 16px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); color: var(--white); line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p { color: rgba(255,255,255,0.68); font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; max-width: 460px; }
+
+    .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { background: var(--gold); color: var(--navy); padding: 14px 30px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,166,35,0.4); }
+    .btn-secondary { background: transparent; color: var(--white); padding: 14px 30px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-stats { display: flex; gap: 32px; margin-top: 44px; }
+    .stat { }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); font-weight: 700; }
+    .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+
+    /* Hero image card */
+    .hero-visual { position: relative; }
+    .shop-card {
+      background: var(--white); border-radius: 20px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      transform: rotate(2deg);
+      transition: transform 0.4s;
+    }
+    .shop-card:hover { transform: rotate(0deg) scale(1.02); }
+    .shop-card-img {
+      width: 100%; height: 200px;
+      background: linear-gradient(135deg, #1a3a6b 0%, #2d5a9e 50%, #1a3a6b 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative; overflow: hidden;
+    }
+    .shop-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3));
+    }
+    .shop-card-body { padding: 20px; }
+    .shop-card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text-dark); margin-bottom: 6px; }
+    .shop-card-body p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
+    .open-badge { display: inline-flex; align-items: center; gap: 6px; background: #e8fdf0; color: var(--green); font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 100px; }
+    .open-badge::before { content: '●'; font-size: 0.5rem; animation: blink 1.5s infinite; }
+
+    .floating-review {
+      position: absolute; bottom: -20px; left: -30px;
+      background: var(--white); border-radius: 14px; padding: 14px 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      display: flex; align-items: center; gap: 12px;
+      animation: floatUp 3s ease-in-out infinite;
+    }
+    @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .review-stars { color: var(--gold); font-size: 0.9rem; }
+    .review-text { font-size: 0.78rem; font-weight: 600; color: var(--text-dark); }
+    .review-sub { font-size: 0.7rem; color: var(--text-muted); }
+
+    .floating-order {
+      position: absolute; top: -18px; right: -20px;
+      background: var(--navy); border-radius: 14px; padding: 14px 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      animation: floatUp 3s ease-in-out infinite 1.5s;
+    }
+    .order-label { font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+    .order-count { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); font-weight: 700; }
+    .order-today { font-size: 0.7rem; color: rgba(255,255,255,0.5); }
+
+    /* ── TRUST STRIP ── */
+    .trust-strip {
+      background: var(--navy-mid); padding: 18px 5vw;
+      display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.7); font-size: 0.82rem; }
+    .trust-icon { font-size: 1.2rem; }
+
+    /* ── SECTION STYLES ── */
+    section { padding: 90px 5vw; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--text-dark); line-height: 1.2; margin-bottom: 16px; }
+    .section-sub { color: var(--text-muted); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+    /* ── PRODUCTS ── */
+    .products-section { background: var(--cream); }
+    .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; gap: 20px; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+
+    .product-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      transition: all 0.3s ease; cursor: pointer; position: relative;
+    }
+    .product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.14); }
+    .product-card:hover .product-img { transform: scale(1.06); }
+
+    .product-img-wrap { overflow: hidden; height: 180px; background: #f0f4ff; }
+    .product-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; transition: transform 0.4s ease; }
+
+    .p-body { padding: 16px 18px 20px; }
+    .p-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+    .p-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--text-dark); margin-bottom: 8px; }
+    .p-footer { display: flex; align-items: center; justify-content: space-between; }
+    .p-price { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+    .p-price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; text-decoration: line-through; margin-right: 4px; }
+    .p-add { background: var(--navy); color: var(--white); border: none; border-radius: 8px; padding: 8px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .p-add:hover { background: var(--gold); color: var(--navy); }
+
+    .badge-sale { position: absolute; top: 12px; left: 12px; background: #E74C3C; color: white; font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .badge-new { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+    /* ── ABOUT / WHY US ── */
+    .why-section { background: var(--navy); }
+    .why-section .section-title { color: var(--white); }
+    .why-section .eyebrow { color: var(--gold-light); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .why-features { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+    .why-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px; padding: 22px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .why-card:hover { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.3); }
+    .why-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .why-card h4 { color: var(--white); font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+    .why-card p { color: rgba(255,255,255,0.5); font-size: 0.82rem; line-height: 1.6; }
+
+    .why-visual { position: relative; }
+    .map-card {
+      background: var(--navy-mid); border-radius: 20px; padding: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .map-emoji { font-size: 6rem; text-align: center; margin-bottom: 8px; }
+    .map-info { display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+    .map-info-icon { font-size: 1.4rem; }
+    .map-info-text { font-size: 0.83rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+    .map-info-text strong { color: var(--white); display: block; margin-bottom: 2px; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--cream); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
+    .testimonial-card {
+      background: var(--white); border-radius: 16px; padding: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--gold);
+      transition: transform 0.3s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); }
+    .t-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 14px; }
+    .t-text { font-size: 0.92rem; color: var(--text-dark); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: 12px; }
+    .t-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--gold)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; }
+    .t-name { font-weight: 600; font-size: 0.88rem; color: var(--text-dark); }
+    .t-role { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ── CONTACT / ORDER ── */
+    .contact-section { background: var(--navy); }
+    .contact-section .section-title { color: var(--white); }
+    .contact-section .eyebrow { color: var(--gold-light); }
+    .contact-section .section-sub { color: rgba(255,255,255,0.55); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 48px; }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 16px; }
+    .c-icon { width: 46px; height: 46px; border-radius: 12px; background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .c-text strong { color: var(--white); font-size: 0.88rem; display: block; margin-bottom: 3px; }
+    .c-text span { color: rgba(255,255,255,0.55); font-size: 0.83rem; line-height: 1.6; }
+
+    .order-form { background: var(--white); border-radius: 20px; padding: 32px; }
+    .order-form h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text-dark); margin-bottom: 24px; }
+    .form-row { margin-bottom: 18px; }
+    .form-row label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-dark); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%; padding: 12px 16px; border: 1.5px solid #e0e6f0; border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text-dark);
+      background: #FAFBFF; outline: none; transition: border-color 0.2s;
+    }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); background: white; }
+    .form-row textarea { resize: none; height: 90px; }
+    .form-submit {
+      width: 100%; background: var(--navy); color: white; border: none; padding: 15px; border-radius: 10px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+      font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+    }
+    .form-submit:hover { background: var(--gold); color: var(--navy); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #060D1A; padding: 40px 5vw 24px;
+      text-align: center;
+    }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 10px; }
+    .footer-logo span { color: var(--white); }
+    .footer-tagline { color: rgba(255,255,255,0.4); font-size: 0.82rem; margin-bottom: 28px; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+    .footer-links a { color: rgba(255,255,255,0.5); font-size: 0.82rem; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
+
+    /* ── STICKY WHATSAPP ── */
+    .whatsapp-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      background: #25D366; color: white; border: none; border-radius: 50%;
+      width: 58px; height: 58px; font-size: 1.7rem; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: bounceIn 1s ease 2s both;
+    }
+    .whatsapp-btn:hover { transform: scale(1.12); box-shadow: 0 10px 30px rgba(37,211,102,0.6); }
+    @keyframes bounceIn { 0%{transform:scale(0);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+    .whatsapp-label {
+      position: fixed; bottom: 36px; right: 98px; z-index: 998;
+      background: var(--navy); color: white; padding: 8px 14px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+      opacity: 0; transform: translateX(10px); transition: all 0.2s;
+      pointer-events: none;
+    }
+    .whatsapp-btn:hover + .whatsapp-label, .whatsapp-label:hover { opacity: 1; transform: translateX(0); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-features { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .products-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Sharma <span>General Store</span></div>
+  <nav>
+    <a href="#products">Products</a>
+    <a href="#about">About Us</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="header-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Order Now →</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Now Available Online</div>
+      <h1>Your Trusted <em>Neighbourhood</em> Store, Now on Your Phone</h1>
+      <p>Fresh groceries, daily essentials, and household items — delivered to your door from the same store your family has trusted for years.</p>
+      <div class="hero-buttons">
+        <a href="#products" class="btn-primary">🛒 Browse Products</a>
+        <a href="#contact" class="btn-secondary">📞 Call to Order</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Happy Families</div></div>
+        <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Years in Business</div></div>
+        <div class="stat"><div class="stat-num">1000+</div><div class="stat-label">Products</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="shop-card">
+        <div class="shop-card-img">🏪</div>
+        <div class="shop-card-body">
+          <h3>Sharma General Store</h3>
+          <p>Opp. Main Market, Civil Lines, Kanpur</p>
+          <span class="open-badge">Open Now • 8 AM – 10 PM</span>
+        </div>
+      </div>
+      <div class="floating-review">
+        <div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">Best quality in the area!</div>
+          <div class="review-sub">— Priya Verma, Customer</div>
+        </div>
+      </div>
+      <div class="floating-order">
+        <div class="order-label">Orders Today</div>
+        <div class="order-count">47</div>
+        <div class="order-today">and counting 🔥</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item"><span class="trust-icon">🚚</span> Free delivery above ₹300</div>
+  <div class="trust-item"><span class="trust-icon">✅</span> Fresh stock daily</div>
+  <div class="trust-item"><span class="trust-icon">💰</span> Best prices guaranteed</div>
+  <div class="trust-item"><span class="trust-icon">📱</span> WhatsApp orders accepted</div>
+  <div class="trust-item"><span class="trust-icon">🔒</span> Secure & trusted since 2012</div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="section-inner">
+    <div class="products-header">
+      <div>
+        <div class="eyebrow">Our Catalogue</div>
+        <div class="section-title">Popular Products</div>
+        <div class="section-sub">Handpicked quality items at prices that make sense for your family budget.</div>
+      </div>
+      <a href="#contact" class="btn-primary" style="flex-shrink:0;">See Full List →</a>
+    </div>
+    <div class="products-grid">
+      <div class="product-card fade-up">
+        <div class="badge-sale">SALE</div>
+        <div class="product-img-wrap"><div class="product-img" style="background:#fff9e6;">🌾</div></div>
+        <div class="p-body">
+          <div class="p-category">Grains & Flour</div>
+          <div class="p-name">Aashirvaad Atta 10 kg</div>
+          <div class="p-footer">
+            <div class="p-price"><span>₹420</span>₹389</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card fade-up">
+        <div class="badge-new">NEW</div>
+        <div class="product-img-wrap"><div class="product-img" style="background:#e8fdf0;">🥛</div></div>
+        <div class="p-body">
+          <div class="p-category">Dairy</div>
+          <div class="p-name">Amul Full Cream Milk 1L</div>
+          <div class="p-footer">
+            <div class="p-price">₹68</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card fade-up">
+        <div class="product-img-wrap"><div class="product-img" style="background:#fff0f0;">🍳</div></div>
+        <div class="p-body">
+          <div class="p-category">Cooking Oil</div>
+          <div class="p-name">Fortune Sunflower Oil 5L</div>
+          <div class="p-footer">
+            <div class="p-price"><span>₹720</span>₹680</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card fade-up">
+        <div class="product-img-wrap"><div class="product-img" style="background:#f0f4ff;">🧴</div></div>
+        <div class="p-body">
+          <div class="p-category">Personal Care</div>
+          <div class="p-name">Dove Body Wash 250ml</div>
+          <div class="p-footer">
+            <div class="p-price">₹195</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card fade-up">
+        <div class="badge-sale">HOT DEAL</div>
+        <div class="product-img-wrap"><div class="product-img" style="background:#fff9e6;">🍫</div></div>
+        <div class="p-body">
+          <div class="p-category">Snacks</div>
+          <div class="p-name">Biscuits & Cookies Combo</div>
+          <div class="p-footer">
+            <div class="p-price"><span>₹150</span>₹115</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card fade-up">
+        <div class="product-img-wrap"><div class="product-img" style="background:#f0f4ff;">🧹</div></div>
+        <div class="p-body">
+          <div class="p-category">Household</div>
+          <div class="p-name">Vim Dishwash Liquid 500ml</div>
+          <div class="p-footer">
+            <div class="p-price">₹82</div>
+            <button class="p-add">+ Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="about">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div>
+        <div class="eyebrow">Why Choose Us</div>
+        <div class="section-title" style="color:white;">We're More Than Just a Store</div>
+        <p style="color:rgba(255,255,255,0.6);font-size:1rem;line-height:1.7;margin-bottom:12px;">For over a decade, Sharma General Store has been the backbone of this neighbourhood. We know our customers by name — and we know exactly what they need.</p>
+        <div class="why-features">
+          <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <h4>Same-Day Delivery</h4>
+            <p>Order before 7 PM, get it delivered to your home the same evening.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">💯</div>
+            <h4>Quality Promise</h4>
+            <p>Every product is checked before it reaches your door. No compromises.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">💸</div>
+            <h4>Fair Pricing</h4>
+            <p>No hidden charges. What you see is what you pay. Always honest.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">📞</div>
+            <h4>Easy Ordering</h4>
+            <p>WhatsApp us your list anytime. We'll pack and deliver, simple.</p>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual">
+        <div class="map-card">
+          <div class="map-emoji">🗺️</div>
+          <div class="map-info">
+            <div class="map-info-icon">📍</div>
+            <div class="map-info-text">
+              <strong>Opp. Main Market, Civil Lines</strong>
+              Kanpur, Uttar Pradesh – 208001
+            </div>
+          </div>
+          <div class="map-info">
+            <div class="map-info-icon">🕐</div>
+            <div class="map-info-text">
+              <strong>Store Hours</strong>
+              Mon – Sun: 8:00 AM to 10:00 PM
+            </div>
+          </div>
+          <div class="map-info">
+            <div class="map-info-icon">🛵</div>
+            <div class="map-info-text">
+              <strong>Delivery Radius</strong>
+              Up to 3 km — Free above ₹300
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="reviews">
+  <div class="section-inner">
+    <div class="eyebrow">Customer Love</div>
+    <div class="section-title">What Our Neighbours Say</div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"I've been shopping here for 8 years. The quality never drops and the prices are always fair. Now that they deliver to home, it's even better!"</div>
+        <div class="t-author">
+          <div class="t-avatar">P</div>
+          <div><div class="t-name">Priya Verma</div><div class="t-role">Civil Lines Resident</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"Just WhatsApp the list and they deliver within an hour. Sharma ji personally checks every order. This is what local shopping should be!"</div>
+        <div class="t-author">
+          <div class="t-avatar">R</div>
+          <div><div class="t-name">Rahul Gupta</div><div class="t-role">Regular Customer</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"The best general store in the area — no question. Fresh products, honest billing, and they even remember my regular items every month!"</div>
+        <div class="t-author">
+          <div class="t-avatar">S</div>
+          <div><div class="t-name">Sunita Mishra</div><div class="t-role">Loyal Customer since 2015</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-inner">
+    <div class="eyebrow">Get In Touch</div>
+    <div class="section-title">Place Your Order Today</div>
+    <div class="section-sub">Fill in the form or just WhatsApp us — we'll get back to you within minutes.</div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="c-icon">📞</div>
+          <div class="c-text"><strong>Call / WhatsApp</strong><span>+91 98765 43210<br>Available 8 AM – 9 PM</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="c-icon">📍</div>
+          <div class="c-text"><strong>Store Address</strong><span>Opp. Main Market, Civil Lines<br>Kanpur, UP – 208001</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="c-icon">🛵</div>
+          <div class="c-text"><strong>Home Delivery</strong><span>Free delivery on orders above ₹300<br>Delivery within 1–2 hours</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="c-icon">💳</div>
+          <div class="c-text"><strong>Payment Options</strong><span>Cash / UPI / PhonePe / GPay<br>No hidden charges</span></div>
+        </div>
+      </div>
+      <div class="order-form">
+        <h3>📋 Quick Order Form</h3>
+        <div class="form-row">
+          <label>Your Name</label>
+          <input type="text" placeholder="e.g. Ramesh Kumar">
+        </div>
+        <div class="form-row">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 98765 XXXXX">
+        </div>
+        <div class="form-row">
+          <label>Delivery Address</label>
+          <input type="text" placeholder="House no., Street, Area">
+        </div>
+        <div class="form-row">
+          <label>Items Needed</label>
+          <textarea placeholder="e.g. Aashirvaad Atta 10kg, Amul Milk 2L, Surf Excel 1kg..."></textarea>
+        </div>
+        <button class="form-submit" onclick="alert('✅ Thank you! We will call you within 15 minutes to confirm your order.')">📦 Send My Order Request</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sharma <span>General Store</span></div>
+  <div class="footer-tagline">Your neighbourhood store, now online. Serving Kanpur since 2012.</div>
+  <div class="footer-links">
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-copy">© 2025 Sharma General Store · Kanpur, UP · All rights reserved</div>
+</footer>
+
+<!-- WHATSAPP BUTTON -->
+<button class="whatsapp-btn" onclick="alert('Opens WhatsApp chat with the store!')">💬</button>
+<div class="whatsapp-label">Chat on WhatsApp</div>
+
+<script>
+  // Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Product add button feedback
+  document.querySelectorAll('.p-add').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const orig = this.textContent;
+      this.textContent = '✓ Added!';
+      this.style.background = '#27AE60';
+      this.style.color = 'white';
+      setTimeout(() => { this.textContent = orig; this.style.background = ''; this.style.color = ''; }, 1500);
+    });
+  });
+</script>
+</body>
+</html>
